@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElMessageBox } from 'element-plus'
-import { useI18n } from '@/hooks/web/useI18n'
-import { useCache } from '@/hooks/web/useCache'
-import { resetRouter } from '@/router'
-import { useRouter } from 'vue-router'
 import { loginOutApi } from '@/api/login'
+import { UserType } from '@/api/login/types'
+import { useCache } from '@/hooks/web/useCache'
 import { useDesign } from '@/hooks/web/useDesign'
+import { useI18n } from '@/hooks/web/useI18n'
+import { resetRouter } from '@/router'
+import { useAppStore } from '@/store/modules/app'
 import { useTagsViewStore } from '@/store/modules/tagsView'
+import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+
+const appStore = useAppStore()
 
 const tagsViewStore = useTagsViewStore()
 
@@ -38,7 +42,8 @@ const loginOut = () => {
     .catch(() => {})
 }
 
-const toDocument = () => {
+const changePassword = () => {
+  //TODO
   window.open('https://element-plus-admin-doc.cn/')
 }
 </script>
@@ -51,12 +56,14 @@ const toDocument = () => {
         alt=""
         class="w-[calc(var(--logo-height)-25px)] rounded-[50%]"
       />
-      <span class="<lg:hidden text-14px pl-[5px] text-[var(--top-header-text-color)]">Archer</span>
+      <span class="<lg:hidden text-14px pl-[5px] text-[var(--top-header-text-color)]">{{
+        (wsCache.get(appStore.getUserInfo) as UserType).name
+      }}</span>
     </div>
     <template #dropdown>
       <ElDropdownMenu>
         <ElDropdownItem>
-          <div @click="toDocument">{{ t('common.document') }}</div>
+          <div @click="changePassword">{{ t('common.changePassWord') }}</div>
         </ElDropdownItem>
         <ElDropdownItem divided>
           <div @click="loginOut">{{ t('common.loginOut') }}</div>

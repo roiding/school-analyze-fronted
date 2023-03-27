@@ -7,7 +7,7 @@ export default {
     login: '登录',
     required: '该项为必填项',
     loginOut: '退出系统',
-    document: '项目文档',
+    changePassWord: '修改密码',
     reminder: '温馨提示',
     loginOutMessage: '是否退出本系统？',
     back: '返回',
@@ -103,6 +103,11 @@ export default {
   },
   router: {
     login: '登录',
+    course: {
+      name: '选课管理',
+      teacher: '教师选课',
+      student: '学生选课'
+    },
     level: '多级菜单',
     menu: '菜单',
     menu1: '菜单1',

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { reactive, ref, unref, watch } from 'vue'
+import { loginApi } from '@/api/login'
+import { UserType } from '@/api/login/types'
 import { Form } from '@/components/Form'
-import { useI18n } from '@/hooks/web/useI18n'
-import { ElButton, ElCheckbox, ElLink } from 'element-plus'
-import { useForm } from '@/hooks/web/useForm'
-import { loginApi, getTestRoleApi, getAdminRoleApi } from '@/api/login'
 import { useCache } from '@/hooks/web/useCache'
+import { useForm } from '@/hooks/web/useForm'
+import { useI18n } from '@/hooks/web/useI18n'
+import { useValidator } from '@/hooks/web/useValidator'
 import { useAppStore } from '@/store/modules/app'
 import { usePermissionStore } from '@/store/modules/permission'
-import { useRouter } from 'vue-router'
-import type { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
-import { UserType } from '@/api/login/types'
-import { useValidator } from '@/hooks/web/useValidator'
 import { FormSchema } from '@/types/form'
+import { ElButton, ElCheckbox, ElLink } from 'element-plus'
+import { reactive, ref, unref, watch } from 'vue'
+import type { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const { required } = useValidator()
 
@@ -43,7 +43,7 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'username',
     label: t('login.username'),
-    value: 'admin',
+    value: '',
     component: 'Input',
     colProps: {
       span: 24
@@ -55,7 +55,7 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'password',
     label: t('login.password'),
-    value: 'admin',
+    value: '',
     component: 'InputPassword',
     colProps: {
       span: 24
@@ -125,23 +125,23 @@ const signIn = async () => {
       loading.value = true
       const { getFormData } = methods
       const formData = await getFormData<UserType>()
-
       try {
         const res = await loginApi(formData)
-
         if (res) {
           wsCache.set(appStore.getUserInfo, res.data)
           // 是否使用动态路由
-          if (appStore.getDynamicRouter) {
-            getRole()
-          } else {
-            await permissionStore.generateRoutes('none').catch(() => {})
-            permissionStore.getAddRouters.forEach((route) => {
-              addRoute(route as RouteRecordRaw) // 动态添加可访问路由表
-            })
-            permissionStore.setIsAddRouters(true)
-            push({ path: redirect.value || permissionStore.addRouters[0].path })
-          }
+          // if (appStore.getDynamicRouter) {
+          //   getRole()
+          // } else {
+          await permissionStore.generateRoutes().catch(() => {})
+          permissionStore.getAddRouters.forEach((route) => {
+            addRoute(route as RouteRecordRaw) // 动态添加可访问路由表
+          })
+          permissionStore.setIsAddRouters(true)
+
+          push({ path: redirect.value || permissionStore.addRouters[0].path })
+          // }
+          // 后台获取权限
         }
       } finally {
         loading.value = false
@@ -150,33 +150,33 @@ const signIn = async () => {
   })
 }
 
-// 获取角色信息
-const getRole = async () => {
-  const { getFormData } = methods
-  const formData = await getFormData<UserType>()
-  const params = {
-    roleName: formData.username
-  }
-  // admin - 模拟后端过滤菜单
-  // test - 模拟前端过滤菜单
-  const res =
-    formData.username === 'admin' ? await getAdminRoleApi(params) : await getTestRoleApi(params)
-  if (res) {
-    const { wsCache } = useCache()
-    const routers = res.data || []
-    wsCache.set('roleRouters', routers)
+// // 获取角色信息
+// const getRole = async () => {
+//   const { getFormData } = methods
+//   const formData = await getFormData<UserType>()
+//   const params = {
+//     roleName: formData.username
+//   }
+//   // admin - 模拟后端过滤菜单
+//   // test - 模拟前端过滤菜单
+//   const res =
+//     formData.username === 'admin' ? await getAdminRoleApi(params) : await getTestRoleApi(params)
+//   if (res) {
+//     const { wsCache } = useCache()
+//     const routers = res.data || []
+//     wsCache.set('roleRouters', routers)
 
-    formData.username === 'admin'
-      ? await permissionStore.generateRoutes('admin', routers).catch(() => {})
-      : await permissionStore.generateRoutes('test', routers).catch(() => {})
+//     formData.username === 'admin'
+//       ? await permissionStore.generateRoutes('admin', routers).catch(() => {})
+//       : await permissionStore.generateRoutes('test', routers).catch(() => {})
 
-    permissionStore.getAddRouters.forEach((route) => {
-      addRoute(route as RouteRecordRaw) // 动态添加可访问路由表
-    })
-    permissionStore.setIsAddRouters(true)
-    push({ path: redirect.value || permissionStore.addRouters[0].path })
-  }
-}
+//     permissionStore.getAddRouters.forEach((route) => {
+//       addRoute(route as RouteRecordRaw) // 动态添加可访问路由表
+//     })
+//     permissionStore.setIsAddRouters(true)
+//     push({ path: redirect.value || permissionStore.addRouters[0].path })
+//   }
+// }
 
 // 去注册页面
 const toRegister = () => {

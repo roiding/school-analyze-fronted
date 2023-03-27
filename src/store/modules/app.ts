@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia'
-import { store } from '../index'
-import { setCssVar, humpToUnderline } from '@/utils'
-import { ElMessage } from 'element-plus'
-import { ElementPlusSize } from '@/types/elementPlus'
 import { useCache } from '@/hooks/web/useCache'
+import { ElementPlusSize } from '@/types/elementPlus'
 import { LayoutType } from '@/types/layout'
 import { ThemeTypes } from '@/types/theme'
+import { humpToUnderline, setCssVar } from '@/utils'
+import { ElMessage } from 'element-plus'
+import { defineStore } from 'pinia'
+import { store } from '../index'
 
 const { wsCache } = useCache()
 
@@ -35,12 +35,14 @@ interface AppState {
   footer: boolean
   theme: ThemeTypes
   fixedMenu: boolean
+  tokenName: string
 }
 
 export const useAppStore = defineStore('app', {
   state: (): AppState => {
     return {
       userInfo: 'userInfo', // 登录信息存储字段-建议每个项目换一个字段，避免与其他项目冲突
+      tokenName: 'satoken',
       sizeMap: ['default', 'large', 'small'],
       mobile: false, // 是否是移动端
       title: import.meta.env.VITE_APP_TITLE, // 标题
@@ -99,6 +101,9 @@ export const useAppStore = defineStore('app', {
     }
   },
   getters: {
+    getTokenName(): string {
+      return this.tokenName
+    },
     getBreadcrumb(): boolean {
       return this.breadcrumb
     },

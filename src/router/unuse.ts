@@ -1,45 +1,6 @@
-import { config } from '@/config/axios/config'
-import { MockMethod } from 'vite-plugin-mock'
-
-const { result_code } = config
-
-const timeout = 1000
-
-const adminList = [
-  {
-    path: '/dashboard',
-    component: '#',
-    redirect: '/dashboard/analysis',
-    name: 'Dashboard',
-    meta: {
-      title: 'router.dashboard',
-      icon: 'ant-design:dashboard-filled',
-      alwaysShow: true
-    },
-    children: [
-      {
-        path: 'analysis',
-        component: 'views/Dashboard/Analysis',
-        name: 'Analysis',
-        meta: {
-          title: 'router.analysis',
-          noCache: true
-        }
-      },
-      {
-        path: 'workplace',
-        component: 'views/Dashboard/Workplace',
-        name: 'Workplace',
-        meta: {
-          title: 'router.workplace',
-          noCache: true
-        }
-      }
-    ]
-  },
-  {
+export const unuseMap= {
     path: '/external-link',
-    component: '#',
+    component: Layout,
     meta: {},
     name: 'ExternalLink',
     children: [
@@ -47,7 +8,7 @@ const adminList = [
         path: 'https://element-plus-admin-doc.cn/',
         name: 'DocumentLink',
         meta: {
-          title: 'router.document',
+          title: t('router.document'),
           icon: 'clarity:document-solid'
         }
       }
@@ -55,16 +16,16 @@ const adminList = [
   },
   {
     path: '/guide',
-    component: '#',
+    component: Layout,
     name: 'Guide',
     meta: {},
     children: [
       {
         path: 'index',
-        component: 'views/Guide/Guide',
+        component: () => import('@/views/Guide/Guide.vue'),
         name: 'GuideDemo',
         meta: {
-          title: 'router.guide',
+          title: t('router.guide'),
           icon: 'cib:telegram-plane'
         }
       }
@@ -72,35 +33,35 @@ const adminList = [
   },
   {
     path: '/components',
-    component: '#',
-    redirect: '/components/form/default-form',
+    component: Layout,
     name: 'ComponentsDemo',
     meta: {
-      title: 'router.component',
+      title: t('router.component'),
       icon: 'bx:bxs-component',
       alwaysShow: true
     },
     children: [
       {
         path: 'form',
-        component: '##',
+        component: getParentLayout(),
+        redirect: '/components/form/default-form',
         name: 'Form',
         meta: {
-          title: 'router.form',
+          title: t('router.form'),
           alwaysShow: true
         },
         children: [
           {
             path: 'default-form',
-            component: 'views/Components/Form/DefaultForm',
+            component: () => import('@/views/Components/Form/DefaultForm.vue'),
             name: 'DefaultForm',
             meta: {
-              title: 'router.defaultForm'
+              title: t('router.defaultForm')
             }
           },
           {
             path: 'use-form',
-            component: 'views/Components/Form/UseFormDemo',
+            component: () => import('@/views/Components/Form/UseFormDemo.vue'),
             name: 'UseForm',
             meta: {
               title: 'UseForm'
@@ -108,7 +69,7 @@ const adminList = [
           },
           {
             path: 'ref-form',
-            component: 'views/Components/Form/RefForm',
+            component: () => import('@/views/Components/Form/RefForm.vue'),
             name: 'RefForm',
             meta: {
               title: 'RefForm'
@@ -118,25 +79,25 @@ const adminList = [
       },
       {
         path: 'table',
-        component: '##',
+        component: getParentLayout(),
         redirect: '/components/table/default-table',
         name: 'TableDemo',
         meta: {
-          title: 'router.table',
+          title: t('router.table'),
           alwaysShow: true
         },
         children: [
           {
             path: 'default-table',
-            component: 'views/Components/Table/DefaultTable',
+            component: () => import('@/views/Components/Table/DefaultTable.vue'),
             name: 'DefaultTable',
             meta: {
-              title: 'router.defaultTable'
+              title: t('router.defaultTable')
             }
           },
           {
             path: 'use-table',
-            component: 'views/Components/Table/UseTableDemo',
+            component: () => import('@/views/Components/Table/UseTableDemo.vue'),
             name: 'UseTable',
             meta: {
               title: 'UseTable'
@@ -144,7 +105,7 @@ const adminList = [
           },
           {
             path: 'ref-table',
-            component: 'views/Components/Table/RefTable',
+            component: () => import('@/views/Components/Table/RefTable.vue'),
             name: 'RefTable',
             meta: {
               title: 'RefTable'
@@ -154,125 +115,125 @@ const adminList = [
       },
       {
         path: 'editor-demo',
-        component: '##',
+        component: getParentLayout(),
         redirect: '/components/editor-demo/editor',
         name: 'EditorDemo',
         meta: {
-          title: 'router.editor',
+          title: t('router.editor'),
           alwaysShow: true
         },
         children: [
           {
             path: 'editor',
-            component: 'views/Components/Editor/Editor',
+            component: () => import('@/views/Components/Editor/Editor.vue'),
             name: 'Editor',
             meta: {
-              title: 'router.richText'
+              title: t('router.richText')
             }
           }
         ]
       },
       {
         path: 'search',
-        component: 'views/Components/Search',
+        component: () => import('@/views/Components/Search.vue'),
         name: 'Search',
         meta: {
-          title: 'router.search'
+          title: t('router.search')
         }
       },
       {
         path: 'descriptions',
-        component: 'views/Components/Descriptions',
+        component: () => import('@/views/Components/Descriptions.vue'),
         name: 'Descriptions',
         meta: {
-          title: 'router.descriptions'
+          title: t('router.descriptions')
         }
       },
       {
         path: 'image-viewer',
-        component: 'views/Components/ImageViewer',
+        component: () => import('@/views/Components/ImageViewer.vue'),
         name: 'ImageViewer',
         meta: {
-          title: 'router.imageViewer'
+          title: t('router.imageViewer')
         }
       },
       {
         path: 'dialog',
-        component: 'views/Components/Dialog',
+        component: () => import('@/views/Components/Dialog.vue'),
         name: 'Dialog',
         meta: {
-          title: 'router.dialog'
+          title: t('router.dialog')
         }
       },
       {
         path: 'icon',
-        component: 'views/Components/Icon',
+        component: () => import('@/views/Components/Icon.vue'),
         name: 'Icon',
         meta: {
-          title: 'router.icon'
+          title: t('router.icon')
         }
       },
       {
         path: 'echart',
-        component: 'views/Components/Echart',
+        component: () => import('@/views/Components/Echart.vue'),
         name: 'Echart',
         meta: {
-          title: 'router.echart'
+          title: t('router.echart')
         }
       },
       {
         path: 'count-to',
-        component: 'views/Components/CountTo',
+        component: () => import('@/views/Components/CountTo.vue'),
         name: 'CountTo',
         meta: {
-          title: 'router.countTo'
+          title: t('router.countTo')
         }
       },
       {
         path: 'qrcode',
-        component: 'views/Components/Qrcode',
+        component: () => import('@/views/Components/Qrcode.vue'),
         name: 'Qrcode',
         meta: {
-          title: 'router.qrcode'
+          title: t('router.qrcode')
         }
       },
       {
         path: 'highlight',
-        component: 'views/Components/Highlight',
+        component: () => import('@/views/Components/Highlight.vue'),
         name: 'Highlight',
         meta: {
-          title: 'router.highlight'
+          title: t('router.highlight')
         }
       },
       {
         path: 'infotip',
-        component: 'views/Components/Infotip',
+        component: () => import('@/views/Components/Infotip.vue'),
         name: 'Infotip',
         meta: {
-          title: 'router.infotip'
+          title: t('router.infotip')
         }
       },
       {
         path: 'input-password',
-        component: 'views/Components/InputPassword',
+        component: () => import('@/views/Components/InputPassword.vue'),
         name: 'InputPassword',
         meta: {
-          title: 'router.inputPassword'
+          title: t('router.inputPassword')
         }
       },
       {
         path: 'sticky',
-        component: 'views/Components/Sticky',
+        component: () => import('@/views/Components/Sticky.vue'),
         name: 'Sticky',
         meta: {
-          title: 'router.sticky'
+          title: t('router.sticky')
         }
       }
     ]
   },
   {
     path: '/hooks',
-    component: '#',
+    component: Layout,
     redirect: '/hooks/useWatermark',
     name: 'Hooks',
     meta: {
@@ -283,7 +244,7 @@ const adminList = [
     children: [
       {
         path: 'useWatermark',
-        component: 'views/hooks/useWatermark',
+        component: () => import('@/views/hooks/useWatermark.vue'),
         name: 'UseWatermark',
         meta: {
           title: 'useWatermark'
@@ -291,7 +252,7 @@ const adminList = [
       },
       {
         path: 'useCrudSchemas',
-        component: 'views/hooks/useCrudSchemas',
+        component: () => import('@/views/hooks/useCrudSchemas.vue'),
         name: 'UseCrudSchemas',
         meta: {
           title: 'useCrudSchemas'
@@ -301,39 +262,39 @@ const adminList = [
   },
   {
     path: '/level',
-    component: '#',
+    component: Layout,
     redirect: '/level/menu1/menu1-1/menu1-1-1',
     name: 'Level',
     meta: {
-      title: 'router.level',
+      title: t('router.level'),
       icon: 'carbon:skill-level-advanced'
     },
     children: [
       {
         path: 'menu1',
         name: 'Menu1',
-        component: '##',
+        component: getParentLayout(),
         redirect: '/level/menu1/menu1-1/menu1-1-1',
         meta: {
-          title: 'router.menu1'
+          title: t('router.menu1')
         },
         children: [
           {
             path: 'menu1-1',
             name: 'Menu11',
-            component: '##',
+            component: getParentLayout(),
             redirect: '/level/menu1/menu1-1/menu1-1-1',
             meta: {
-              title: 'router.menu11',
+              title: t('router.menu11'),
               alwaysShow: true
             },
             children: [
               {
                 path: 'menu1-1-1',
                 name: 'Menu111',
-                component: 'views/Level/Menu111',
+                component: () => import('@/views/Level/Menu111.vue'),
                 meta: {
-                  title: 'router.menu111'
+                  title: t('router.menu111')
                 }
               }
             ]
@@ -341,86 +302,86 @@ const adminList = [
           {
             path: 'menu1-2',
             name: 'Menu12',
-            component: 'views/Level/Menu12',
+            component: () => import('@/views/Level/Menu12.vue'),
             meta: {
-              title: 'router.menu12'
+              title: t('router.menu12')
             }
           }
         ]
       },
       {
         path: 'menu2',
-        name: 'Menu2Demo',
-        component: 'views/Level/Menu2',
+        name: 'Menu2',
+        component: () => import('@/views/Level/Menu2.vue'),
         meta: {
-          title: 'router.menu2'
+          title: t('router.menu2')
         }
       }
     ]
   },
   {
     path: '/example',
-    component: '#',
+    component: Layout,
     redirect: '/example/example-dialog',
     name: 'Example',
     meta: {
-      title: 'router.example',
+      title: t('router.example'),
       icon: 'ep:management',
       alwaysShow: true
     },
     children: [
       {
         path: 'example-dialog',
-        component: 'views/Example/Dialog/ExampleDialog',
+        component: () => import('@/views/Example/Dialog/ExampleDialog.vue'),
         name: 'ExampleDialog',
         meta: {
-          title: 'router.exampleDialog'
+          title: t('router.exampleDialog')
         }
       },
       {
         path: 'example-page',
-        component: 'views/Example/Page/ExamplePage',
+        component: () => import('@/views/Example/Page/ExamplePage.vue'),
         name: 'ExamplePage',
         meta: {
-          title: 'router.examplePage'
+          title: t('router.examplePage')
         }
       },
       {
         path: 'example-add',
-        component: 'views/Example/Page/ExampleAdd',
+        component: () => import('@/views/Example/Page/ExampleAdd.vue'),
         name: 'ExampleAdd',
         meta: {
-          title: 'router.exampleAdd',
+          title: t('router.exampleAdd'),
           noTagsView: true,
           noCache: true,
           hidden: true,
-          showMainRoute: true,
+          canTo: true,
           activeMenu: '/example/example-page'
         }
       },
       {
         path: 'example-edit',
-        component: 'views/Example/Page/ExampleEdit',
+        component: () => import('@/views/Example/Page/ExampleEdit.vue'),
         name: 'ExampleEdit',
         meta: {
-          title: 'router.exampleEdit',
+          title: t('router.exampleEdit'),
           noTagsView: true,
           noCache: true,
           hidden: true,
-          showMainRoute: true,
+          canTo: true,
           activeMenu: '/example/example-page'
         }
       },
       {
         path: 'example-detail',
-        component: 'views/Example/Page/ExampleDetail',
+        component: () => import('@/views/Example/Page/ExampleDetail.vue'),
         name: 'ExampleDetail',
         meta: {
-          title: 'router.exampleDetail',
+          title: t('router.exampleDetail'),
           noTagsView: true,
           noCache: true,
           hidden: true,
-          showMainRoute: true,
+          canTo: true,
           activeMenu: '/example/example-page'
         }
       }
@@ -428,18 +389,18 @@ const adminList = [
   },
   {
     path: '/error',
-    component: '#',
+    component: Layout,
     redirect: '/error/404',
     name: 'Error',
     meta: {
-      title: 'router.errorPage',
+      title: t('router.errorPage'),
       icon: 'ci:error',
       alwaysShow: true
     },
     children: [
       {
         path: '404-demo',
-        component: 'views/Error/404',
+        component: () => import('@/views/Error/404.vue'),
         name: '404Demo',
         meta: {
           title: '404'
@@ -447,7 +408,7 @@ const adminList = [
       },
       {
         path: '403-demo',
-        component: 'views/Error/403',
+        component: () => import('@/views/Error/403.vue'),
         name: '403Demo',
         meta: {
           title: '403'
@@ -455,80 +416,40 @@ const adminList = [
       },
       {
         path: '500-demo',
-        component: 'views/Error/500',
+        component: () => import('@/views/Error/500.vue'),
         name: '500Demo',
         meta: {
           title: '500'
         }
       }
     ]
-  }
-]
-
-const testList: string[] = [
-  '/dashboard',
-  '/dashboard/analysis',
-  '/dashboard/workplace',
-  'external-link',
-  'https://element-plus-admin-doc.cn/',
-  '/guide',
-  '/guide/index',
-  '/components',
-  '/components/form',
-  '/components/form/default-form',
-  '/components/form/use-form',
-  '/components/form/ref-form',
-  '/components/table',
-  '/components/table/default-table',
-  '/components/table/use-table',
-  '/components/table/ref-table',
-  '/components/editor-demo',
-  '/components/editor-demo/editor',
-  '/components/search',
-  '/components/descriptions',
-  '/components/image-viewer',
-  '/components/dialog',
-  '/components/icon',
-  '/components/echart',
-  '/components/count-to',
-  '/components/qrcode',
-  '/components/highlight',
-  '/components/infotip',
-  '/Components/InputPassword',
-  '/Components/Sticky',
-  '/hooks',
-  '/hooks/useWatermark',
-  '/hooks/useCrudSchemas',
-  '/level',
-  '/level/menu1',
-  '/level/menu1/menu1-1',
-  '/level/menu1/menu1-1/menu1-1-1',
-  '/level/menu1/menu1-2',
-  '/level/menu2',
-  '/example',
-  '/example/example-dialog',
-  '/example/example-page',
-  '/example/example-add',
-  '/example/example-edit',
-  '/example/example-detail',
-  '/error',
-  '/error/404-demo',
-  '/error/403-demo',
-  '/error/500-demo'
-]
-
-export default [
-  // 列表接口
+  },
   {
-    url: '/api/role/list',
-    method: 'get',
-    timeout,
-    response: ({ query }) => {
-      const { roleName } = query
-      return {
-        code: result_code,
-        data: roleName === 'admin' ? adminList : testList
+    path: '/authorization',
+    component: Layout,
+    redirect: '/authorization/user',
+    name: 'Authorization',
+    meta: {
+      title: t('router.authorization'),
+      icon: 'eos-icons:role-binding',
+      alwaysShow: true
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/Authorization/User.vue'),
+        name: 'User',
+        meta: {
+          title: t('router.user')
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/Authorization/Role.vue'),
+        name: 'Role',
+        meta: {
+          title: t('router.role')
+        }
       }
-    }
-  }
-] as MockMethod[]
+    ]
+  },

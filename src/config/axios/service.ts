@@ -1,9 +1,12 @@
+import { UserType } from '@/api/login/types'
+import { useCache } from '@/hooks/web/useCache'
+import { useAppStore } from '@/store/modules/app'
 import axios, {
+  AxiosError,
   AxiosInstance,
-  InternalAxiosRequestConfig,
   AxiosRequestHeaders,
   AxiosResponse,
-  AxiosError
+  InternalAxiosRequestConfig
 } from 'axios'
 
 import qs from 'qs'
@@ -11,6 +14,10 @@ import qs from 'qs'
 import { config } from './config'
 
 import { ElMessage } from 'element-plus'
+
+const { wsCache } = useCache()
+
+const appStore = useAppStore()
 
 const { result_code, base_url } = config
 
@@ -25,6 +32,12 @@ const service: AxiosInstance = axios.create({
 // request拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    const tokenName = appStore.getTokenName
+    const token = (wsCache.get(appStore.getUserInfo) as UserType)?.token
+    if (token != '') {
+      // 设置header token
+      token && (config.headers[tokenName] = token)
+    }
     if (
       config.method === 'post' &&
       (config.headers as AxiosRequestHeaders)['Content-Type'] ===
@@ -65,7 +78,7 @@ service.interceptors.response.use(
     } else if (response.data.code === result_code) {
       return response.data
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.data.error)
     }
   },
   (error: AxiosError) => {

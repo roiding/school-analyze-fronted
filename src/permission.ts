@@ -1,13 +1,13 @@
-import router from './router'
-import { useAppStoreWithOut } from '@/store/modules/app'
-import { useCache } from '@/hooks/web/useCache'
-import type { RouteRecordRaw } from 'vue-router'
-import { useTitle } from '@/hooks/web/useTitle'
-import { useNProgress } from '@/hooks/web/useNProgress'
-import { usePermissionStoreWithOut } from '@/store/modules/permission'
-import { useDictStoreWithOut } from '@/store/modules/dict'
-import { usePageLoading } from '@/hooks/web/usePageLoading'
 import { getDictApi } from '@/api/common'
+import { useCache } from '@/hooks/web/useCache'
+import { useNProgress } from '@/hooks/web/useNProgress'
+import { usePageLoading } from '@/hooks/web/usePageLoading'
+import { useTitle } from '@/hooks/web/useTitle'
+import { useAppStoreWithOut } from '@/store/modules/app'
+import { useDictStoreWithOut } from '@/store/modules/dict'
+import { usePermissionStoreWithOut } from '@/store/modules/permission'
+import type { RouteRecordRaw } from 'vue-router'
+import router from './router'
 
 const permissionStore = usePermissionStoreWithOut()
 
@@ -42,20 +42,19 @@ router.beforeEach(async (to, from, next) => {
         next()
         return
       }
-
       // 开发者可根据实际情况进行修改
-      const roleRouters = wsCache.get('roleRouters') || []
-      const userInfo = wsCache.get(appStore.getUserInfo)
+      // const roleRouters = wsCache.get('roleRouters') || []
+      // const userInfo = wsCache.get(appStore.getUserInfo)
 
       // 是否使用动态路由
-      if (appStore.getDynamicRouter) {
-        userInfo.role === 'admin'
-          ? await permissionStore.generateRoutes('admin', roleRouters as AppCustomRouteRecordRaw[])
-          : await permissionStore.generateRoutes('test', roleRouters as string[])
-      } else {
-        await permissionStore.generateRoutes('none')
-      }
-
+      // if (appStore.getDynamicRouter) {
+      //   userInfo.role === 'admin'
+      //     ? await permissionStore.generateRoutes('admin', roleRouters as AppCustomRouteRecordRaw[])
+      //     : await permissionStore.generateRoutes('test', roleRouters as string[])
+      // } else {
+      //   await permissionStore.generateRoutes('none')
+      // }
+      await permissionStore.generateRoutes()
       permissionStore.getAddRouters.forEach((route) => {
         router.addRoute(route as unknown as RouteRecordRaw) // 动态添加可访问路由表
       })

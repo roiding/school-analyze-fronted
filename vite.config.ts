@@ -1,18 +1,18 @@
-import { resolve } from 'path'
-import { loadEnv } from 'vite'
-import type { UserConfig, ConfigEnv } from 'vite'
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite"
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
-import WindiCSS from 'vite-plugin-windicss'
-import progress from 'vite-plugin-progress'
-import EslintPlugin from 'vite-plugin-eslint'
-import { ViteEjsPlugin } from "vite-plugin-ejs"
-import { viteMockServe } from 'vite-plugin-mock'
-import PurgeIcons from 'vite-plugin-purge-icons'
-import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite"
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import { resolve } from 'path'
 import DefineOptions from "unplugin-vue-define-options/vite"
+import type { ConfigEnv, UserConfig } from 'vite'
+import { loadEnv } from 'vite'
+import { ViteEjsPlugin } from "vite-plugin-ejs"
+import EslintPlugin from 'vite-plugin-eslint'
+import { viteMockServe } from 'vite-plugin-mock'
+import progress from 'vite-plugin-progress'
+import PurgeIcons from 'vite-plugin-purge-icons'
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import WindiCSS from 'vite-plugin-windicss'
 
 // https://vitejs.dev/config/
 const root = process.cwd()
@@ -116,7 +116,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       proxy: {
         // 选项写法
         '/api': {
-          target: 'http://127.0.0.1:8000',
+          target: 'http://192.168.1.223:8080',
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, '')
         }

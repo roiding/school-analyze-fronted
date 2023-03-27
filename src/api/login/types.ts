@@ -4,9 +4,11 @@ export type UserLoginType = {
 }
 
 export type UserType = {
+  name: string
   username: string
-  password: string
-  role: string
-  roleId: string
-  permissions: string | string[]
+  school: string
+  grade: string
+  clazz: string
+  type: string
+  token: string
 }

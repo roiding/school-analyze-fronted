@@ -7,7 +7,7 @@ export default {
     login: 'Login',
     required: 'This is required',
     loginOut: 'Login out',
-    document: 'Document',
+    changePassWord: 'Change PassWord',
     reminder: 'Reminder',
     loginOutMessage: 'Exit the system?',
     back: 'Back',
@@ -103,6 +103,11 @@ export default {
   },
   router: {
     login: 'Login',
+    cource: {
+      name: 'Course Manage',
+      teacher: 'Teacher Cource Choice',
+      student: 'Student Cource Choice'
+    },
     level: 'Multi level menu',
     menu: 'Menu',
     menu1: 'Menu1',

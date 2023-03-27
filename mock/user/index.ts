@@ -6,32 +6,29 @@ const { result_code } = config
 const timeout = 1000
 
 const List: {
+  name: string
   username: string
-  password: string
-  role: string
-  roleId: string
-  permissions: string | string[]
+  school: string
+  grade: string
+  clazz: string
+  type: string
+  token: string
 }[] = [
   {
     username: 'admin',
-    password: 'admin',
-    role: 'admin',
-    roleId: '1',
-    permissions: ['*.*.*']
-  },
-  {
-    username: 'test',
-    password: 'test',
-    role: 'test',
-    roleId: '2',
-    permissions: ['example:dialog:create', 'example:dialog:delete']
+    name: 'test',
+    school: '123',
+    grade: '',
+    clazz: '',
+    type: 'teacher',
+    token: '123'
   }
 ]
 
 export default [
   // 列表接口
   {
-    url: '/user/list',
+    url: '/api/user/list',
     method: 'get',
     response: ({ query }) => {
       const { username, pageIndex, pageSize } = query
@@ -52,42 +49,29 @@ export default [
         }
       }
     }
-  },
-  // 登录接口
-  {
-    url: '/user/login',
-    method: 'post',
-    timeout,
-    response: ({ body }) => {
-      const data = body
-      let hasUser = false
-      for (const user of List) {
-        if (user.username === data.username && user.password === data.password) {
-          hasUser = true
-          return {
-            code: result_code,
-            data: user
-          }
-        }
-      }
-      if (!hasUser) {
-        return {
-          code: '500',
-          message: '账号或密码错误'
-        }
-      }
-    }
-  },
-  // 退出接口
-  {
-    url: '/user/loginOut',
-    method: 'get',
-    timeout,
-    response: () => {
-      return {
-        code: result_code,
-        data: null
-      }
-    }
   }
+  // // 登录接口
+  // {
+  //   url: '/user/login',
+  //   method: 'post',
+  //   timeout,
+  //   response: ({ body }) => {
+  //     return {
+  //       code: result_code,
+  //       data: List[0]
+  //     }
+  //   }
+  // },
+  // 退出接口
+  // {
+  //   url: '/api/user/loginOut',
+  //   method: 'get',
+  //   timeout,
+  //   response: () => {
+  //     return {
+  //       code: result_code,
+  //       data: null
+  //     }
+  //   }
+  // }
 ] as MockMethod[]
